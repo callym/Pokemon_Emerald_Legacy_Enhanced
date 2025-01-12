@@ -61,15 +61,14 @@ A common request throughout the Legacy project to make the Treecko Dragon type.
 ### Implemented Changes:
 * All changes already present in Base Patch.
 * Grovyle and Sceptile with added Dragon type.
+  * Dragon Claw added to Grovyle TM/HM Learnset
 * Starter Level-up moves updated (changes compared to Emerald Legacy only):
   * Grovyle:
     * Lvl 16: Twister
     * Lvl 19: Razor Leaf
     * Lvl 34: Dragonbreath
-    * Lvl 37: Leaf Blade (in case of evolution cancellation)
     * Lvl 45: Dragon Claw
   * Sceptile:
-    * Lvl  1: Crunch (Treeko Egg Move, for relearning)
     * Lvl 16: Twister
     * Lvl 19: Razor Leaf
     * Lvl 34: Dragonbreath

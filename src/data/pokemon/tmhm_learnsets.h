@@ -6696,6 +6696,7 @@ const union {
 
     [SPECIES_GROVYLE] = { .learnset = {
         .FOCUS_PUNCH = TRUE,
+        .DRAGON_CLAW = TRUE,
         .TOXIC = TRUE,
         .BULLET_SEED = TRUE,
         .HIDDEN_POWER = TRUE,
