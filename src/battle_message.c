@@ -431,6 +431,7 @@ static const u8 sText_SpDef2[] = _("SP. DEF");
 static const u8 sText_Accuracy[] = _("accuracy");
 static const u8 sText_Evasiveness[] = _("evasiveness");
 static const u8 sText_PokemonPickupText[] = _("{B_BUFF1} picked up {B_BUFF2}!");
+static const u8 sText_PokemonPickupMultipleText[] = _("Your POKéMON picked up {B_BUFF1} items!");
 
 const u8 * const gStatNamesTable[NUM_BATTLE_STATS] =
 {
@@ -887,6 +888,7 @@ const u8 * const gBattleStringsTable[BATTLESTRINGS_COUNT - BATTLESTRINGS_TABLE_S
     [STRINGID_TRAINER1WINTEXT - BATTLESTRINGS_TABLE_START] = sText_Trainer1WinText,
     [STRINGID_TRAINER2WINTEXT - BATTLESTRINGS_TABLE_START] = sText_Trainer2WinText,
     [STRINGID_POKEMONPICKUP - BATTLESTRINGS_TABLE_START] = sText_PokemonPickupText,
+    [STRINGID_POKEMONPICKUPMULTIPLE - BATTLESTRINGS_TABLE_START] = sText_PokemonPickupMultipleText,
 };
 
 const u16 gMissStringIds[] =

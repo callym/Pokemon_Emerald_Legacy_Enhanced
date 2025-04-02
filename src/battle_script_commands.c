@@ -9568,7 +9568,8 @@ static void Cmd_pickup(void)
     s32 i;
     u16 species, heldItem;
     u8 ability;
-    bool8 pickedUp = FALSE;
+    u8 pickedUp = 0;
+    u8 monIdx;
 
     if (InBattlePike())
     {
@@ -9595,13 +9596,7 @@ static void Cmd_pickup(void)
                 heldItem = GetBattlePyramidPickupItemId();
                 SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
 
-                PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, 0, i)
-                PREPARE_ITEM_BUFFER(gBattleTextBuff2, heldItem)
-
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_PrintPickupString;
-
-                pickedUp = TRUE;
+                pickedUp++;
             }
         }
     }
@@ -9633,29 +9628,23 @@ static void Cmd_pickup(void)
                 {
                     if (sPickupProbabilities[j] > rand)
                     {
-                        SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sPickupItems[lvlDivBy10 + j]);
+                        heldItem = sPickupItems[lvlDivBy10 + j];
+                        monIdx = i;
 
-                        PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, 0, i)
-                        PREPARE_ITEM_BUFFER(gBattleTextBuff2, sPickupItems[lvlDivBy10 + j])
+                        SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
 
-                        BattleScriptPush(gBattlescriptCurrInstr + 1);
-                        gBattlescriptCurrInstr = BattleScript_PrintPickupString;
-
-                        pickedUp = TRUE;
+                        pickedUp++;
 
                         break;
                     }
                     else if (rand == 99 || rand == 98)
                     {
-                        SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sRarePickupItems[lvlDivBy10 + (99 - rand)]);
+                        heldItem = sRarePickupItems[lvlDivBy10 + (99 - rand)];
+                        monIdx = i;
 
-                        PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, 0, i)
-                        PREPARE_ITEM_BUFFER(gBattleTextBuff2, sRarePickupItems[lvlDivBy10 + (99 - rand)])
+                        SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
 
-                        BattleScriptPush(gBattlescriptCurrInstr + 1);
-                        gBattlescriptCurrInstr = BattleScript_PrintPickupString;
-
-                        pickedUp = TRUE;
+                        pickedUp++;
 
                         break;
                     }
@@ -9664,7 +9653,18 @@ static void Cmd_pickup(void)
         }
     }
 
-    if (!pickedUp) {
+    if (pickedUp > 1) {
+        PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff1, 1, pickedUp);
+
+        BattleScriptPush(gBattlescriptCurrInstr + 1);
+        gBattlescriptCurrInstr = BattleScript_PrintPickupMultipleString;
+    } else if (pickedUp == 1) {
+        PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, 0, monIdx)
+        PREPARE_ITEM_BUFFER(gBattleTextBuff2, heldItem)
+
+        BattleScriptPush(gBattlescriptCurrInstr + 1);
+        gBattlescriptCurrInstr = BattleScript_PrintPickupString;
+    } else {
         gBattlescriptCurrInstr++;
     }
 }
