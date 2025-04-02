@@ -9568,6 +9568,7 @@ static void Cmd_pickup(void)
     s32 i;
     u16 species, heldItem;
     u8 ability;
+    bool8 pickedUp = FALSE;
 
     if (InBattlePike())
     {
@@ -9593,6 +9594,14 @@ static void Cmd_pickup(void)
             {
                 heldItem = GetBattlePyramidPickupItemId();
                 SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
+
+                PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, 0, i)
+                PREPARE_ITEM_BUFFER(gBattleTextBuff2, heldItem)
+
+                BattleScriptPush(gBattlescriptCurrInstr + 1);
+                gBattlescriptCurrInstr = BattleScript_PrintPickupString;
+
+                pickedUp = TRUE;
             }
         }
     }
@@ -9625,11 +9634,29 @@ static void Cmd_pickup(void)
                     if (sPickupProbabilities[j] > rand)
                     {
                         SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sPickupItems[lvlDivBy10 + j]);
+
+                        PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, 0, i)
+                        PREPARE_ITEM_BUFFER(gBattleTextBuff2, sPickupItems[lvlDivBy10 + j])
+
+                        BattleScriptPush(gBattlescriptCurrInstr + 1);
+                        gBattlescriptCurrInstr = BattleScript_PrintPickupString;
+
+                        pickedUp = TRUE;
+
                         break;
                     }
                     else if (rand == 99 || rand == 98)
                     {
                         SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sRarePickupItems[lvlDivBy10 + (99 - rand)]);
+
+                        PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, 0, i)
+                        PREPARE_ITEM_BUFFER(gBattleTextBuff2, sRarePickupItems[lvlDivBy10 + (99 - rand)])
+
+                        BattleScriptPush(gBattlescriptCurrInstr + 1);
+                        gBattlescriptCurrInstr = BattleScript_PrintPickupString;
+
+                        pickedUp = TRUE;
+
                         break;
                     }
                 }
@@ -9637,7 +9664,9 @@ static void Cmd_pickup(void)
         }
     }
 
-    gBattlescriptCurrInstr++;
+    if (!pickedUp) {
+        gBattlescriptCurrInstr++;
+    }
 }
 
 static void Cmd_docastformchangeanimation(void)
